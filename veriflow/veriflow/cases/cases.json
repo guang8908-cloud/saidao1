@@ -1,0 +1,25 @@
+{
+  "_doc": "10 条用例：6 条正常、4 条故意注入失败。fault=none 表示干净数据。",
+  "cases": [
+    {"id": "T-01", "name": "基础组间均值差（干净数据）", "n": 120, "seed": 7,
+     "fault": "none", "priority": 3, "expect": "pass", "parallel": 1},
+    {"id": "T-02", "name": "并发三路独立复算（触发负载改派）", "n": 200, "seed": 11,
+     "fault": "none", "priority": 5, "expect": "pass", "parallel": 3},
+    {"id": "T-03", "name": "大样本 n=500", "n": 500, "seed": 13,
+     "fault": "none", "priority": 2, "expect": "pass", "parallel": 1},
+    {"id": "T-04", "name": "空值率 33%（触发清洗分支）", "n": 120, "seed": 17,
+     "fault": "null_ratio", "priority": 3, "expect": "pass", "parallel": 1},
+    {"id": "T-05", "name": "量纲混用 ug/mg（L3 应拦下）", "n": 120, "seed": 19,
+     "fault": "unit_mismatch", "priority": 4, "expect": "pass_after_fix", "parallel": 1},
+    {"id": "T-06", "name": "缺 group 列（L1 应拦下）", "n": 120, "seed": 23,
+     "fault": "missing_group_col", "priority": 4, "expect": "pass_after_fix", "parallel": 1},
+    {"id": "T-07", "name": "依赖缺失（L2 应拦下）", "n": 120, "seed": 29,
+     "fault": "import_error", "priority": 4, "expect": "pass_after_fix", "parallel": 1},
+    {"id": "T-08", "name": "需求歧义（应转人工而非硬猜）", "n": 120, "seed": 31,
+     "fault": "ambiguous", "priority": 3, "expect": "degraded", "parallel": 1},
+    {"id": "T-09", "name": "轮次上限=1 且数据有错（终止条件1）", "n": 120, "seed": 37,
+     "fault": "unit_mismatch", "priority": 3, "expect": "failed", "max_rounds": 1, "parallel": 1},
+    {"id": "T-10", "name": "备用实现同样不可用（终止条件3：策略去重）", "n": 120, "seed": 41,
+     "fault": "import_error", "repair": "stuck", "priority": 3, "expect": "blocked", "parallel": 1}
+  ]
+}

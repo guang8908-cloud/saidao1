@@ -1,0 +1,50 @@
+{
+  "agents": [
+    {
+      "name": "planner-1",
+      "role": "规划者",
+      "skills": ["planning", "decomposition"],
+      "tools": ["kb_search"],
+      "capacity": 2,
+      "memory": "session",
+      "model": "offline-rules"
+    },
+    {
+      "name": "executor-1",
+      "role": "执行者（数据处理）",
+      "skills": ["data_probe", "cleaning", "codegen", "sandbox_exec"],
+      "tools": ["csv_reader", "python_sandbox", "shell"],
+      "capacity": 2,
+      "memory": "task",
+      "model": "offline-rules"
+    },
+    {
+      "name": "executor-2",
+      "role": "执行者（数据处理，第二副本）",
+      "skills": ["data_probe", "cleaning", "codegen", "sandbox_exec"],
+      "tools": ["csv_reader", "python_sandbox", "shell"],
+      "capacity": 2,
+      "memory": "task",
+      "model": "offline-rules"
+    },
+    {
+      "name": "verifier-1",
+      "role": "校验者",
+      "skills": ["structure_check", "numeric_compare", "cross_recompute"],
+      "tools": ["independent_recompute"],
+      "capacity": 2,
+      "memory": "none",
+      "model": "offline-rules",
+      "note": "禁止调用生成类工具与生成模型，避免自证"
+    },
+    {
+      "name": "writer-1",
+      "role": "汇报者",
+      "skills": ["report"],
+      "tools": ["markdown_writer"],
+      "capacity": 1,
+      "memory": "task",
+      "model": "offline-rules"
+    }
+  ]
+}

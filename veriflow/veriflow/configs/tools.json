@@ -1,0 +1,35 @@
+{
+  "version": "1.0",
+  "note": "工具注册表：名字 + 说明 + JSON Schema 入参 + 本地实现（harness/tools.py）。上层只按名字调用，替换为 MCP 转发时上层不改。",
+  "tools": [
+    {
+      "name": "probe_csv",
+      "desc": "统计 CSV 的行数、列名与空值率，用于决定是否走清洗分支",
+      "input": {"type": "object", "properties": {"path": {"type": "string"}}, "required": ["path"]}
+    },
+    {
+      "name": "clean_csv",
+      "desc": "去掉含空值的行与完全重复的行，输出标准化 CSV",
+      "input": {"type": "object", "properties": {"src": {"type": "string"}, "dst": {"type": "string"}},
+                "required": ["src", "dst"]}
+    },
+    {
+      "name": "run_python",
+      "desc": "在沙箱子进程中执行 Python 脚本，返回 exit_code 与耗时（脚本仅限标准库）",
+      "input": {"type": "object", "properties": {"script": {"type": "string"}, "cwd": {"type": "string"}},
+                "required": ["script"]}
+    },
+    {
+      "name": "compare_truth",
+      "desc": "把结果与基准真值按给定容差比对，返回偏差与是否通过",
+      "input": {"type": "object", "properties": {"value": {"type": "number"}, "truth": {"type": "number"},
+                                                 "tol": {"type": "number"}}, "required": ["value", "truth", "tol"]}
+    },
+    {
+      "name": "kb_search",
+      "desc": "检索本地方法说明库，返回命中章节与出处（用于口径引用）",
+      "input": {"type": "object", "properties": {"query": {"type": "string"}, "k": {"type": "integer"}},
+                "required": ["query"]}
+    }
+  ]
+}

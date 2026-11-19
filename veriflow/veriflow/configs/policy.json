@@ -1,0 +1,14 @@
+{
+  "weights": {"match": 0.4, "load": 0.3, "priority": 0.2, "success": 0.1},
+  "min_match": 0.34,
+  "high_load": 0.5,
+  "max_rounds": 3,
+  "max_agent_calls": 12,
+  "strategy_map": {
+    "tool_fail": "switch_tool",
+    "input_data": "refetch_data",
+    "logic": "normalize_units",
+    "structure": "rerun_with_schema",
+    "ambiguous": "ask_human"
+  }
+}
