@@ -1,0 +1,49 @@
+{
+  "description": "全部为模拟时间与依据，仅供核验器开发测试，不代表校园真实办公安排。",
+  "cases": [
+    {
+      "id": "adjacent-pass",
+      "request": {
+        "campus": "baiyun",
+        "availableWindow": {"start": "09:00", "end": "11:00"},
+        "simulation": true,
+        "tasks": [
+          {"id": "check-in", "title": "学院登记", "serviceWindow": {"start": "09:00", "end": "11:00"}},
+          {"id": "dorm", "title": "办理入住", "serviceWindow": {"start": "09:00", "end": "12:00"}}
+        ],
+        "evidence": [
+          {"id": "fixture-1", "kind": "simulation", "source": "本样例自设场景", "summary": "用于测试任务依赖和相邻时段", "verified": false}
+        ]
+      },
+      "plan": {
+        "steps": [
+          {"id": "step-1", "taskId": "check-in", "title": "学院登记", "campus": "baiyun", "start": "09:00", "end": "09:30", "dependsOn": [], "evidenceIds": ["fixture-1"]},
+          {"id": "step-2", "taskId": "dorm", "title": "办理入住", "campus": "baiyun", "start": "09:30", "end": "10:00", "dependsOn": ["step-1"], "evidenceIds": ["fixture-1"]}
+        ]
+      },
+      "expected": {"status": "passed", "issues": []}
+    },
+    {
+      "id": "overlap-and-dependency",
+      "request": {
+        "campus": "baiyun",
+        "availableWindow": {"start": "09:00", "end": "11:00"},
+        "simulation": true,
+        "tasks": [
+          {"id": "check-in", "title": "学院登记", "serviceWindow": {"start": "09:00", "end": "11:00"}},
+          {"id": "dorm", "title": "办理入住", "serviceWindow": {"start": "09:00", "end": "12:00"}}
+        ],
+        "evidence": [
+          {"id": "fixture-1", "kind": "simulation", "source": "本样例自设场景", "summary": "用于测试冲突检出", "verified": false}
+        ]
+      },
+      "plan": {
+        "steps": [
+          {"id": "step-1", "taskId": "check-in", "title": "学院登记", "campus": "baiyun", "start": "09:00", "end": "09:45", "dependsOn": [], "evidenceIds": ["fixture-1"]},
+          {"id": "step-2", "taskId": "dorm", "title": "办理入住", "campus": "baiyun", "start": "09:30", "end": "10:00", "dependsOn": ["step-1"], "evidenceIds": ["fixture-1"]}
+        ]
+      },
+      "expected": {"status": "revise", "requiredIssueCodes": ["time_overlap", "dependency_conflict"]}
+    }
+  ]
+}
