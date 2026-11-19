@@ -1,0 +1,23 @@
+{
+  "entry": "N1",
+  "nodes": [
+    {"id": "N1", "kind": "plan", "skills": ["planning"], "next": "N2",
+     "desc": "规划者拆解需求、声明假设"},
+    {"id": "N2", "kind": "probe", "skills": ["data_probe"], "next": "N3",
+     "desc": "探查数据：行数、是否缺 group 列、空值率"},
+    {"id": "N3", "kind": "branch", "when": "probe_dirty", "next": "N4", "next_if_false": "N5",
+     "desc": "条件分支：数据脏则走清洗，否则跳过"},
+    {"id": "N4", "kind": "clean", "skills": ["cleaning"], "next": "N5",
+     "desc": "清洗：去空值、去重复"},
+    {"id": "N5", "kind": "gen_script", "skills": ["codegen"], "next": "N6",
+     "desc": "生成分析脚本（同一节点在第二轮被重入，用于自循环）"},
+    {"id": "N6", "kind": "run", "skills": ["sandbox_exec"], "next": "N7",
+     "desc": "沙箱执行；parallel>=2 时并发派发两条独立复算"},
+    {"id": "N7", "kind": "verify", "skills": ["structure_check", "numeric_compare"], "next": "N8",
+     "desc": "五级验证 L1–L4，产出结构化结论"},
+    {"id": "N8", "kind": "loop", "next_on_pass": "N9", "next_on_stop": "N9", "next_on_retry": "N5",
+     "desc": "自我循环判定：通过/修复重试/终止"},
+    {"id": "N9", "kind": "report", "skills": ["report"], "next": null,
+     "desc": "汇总报告"}
+  ]
+}
